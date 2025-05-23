@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>BARBER X 💈 - Tu Estilo, Nuestra Pasión</title>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* Configuración global: cuerpo de la página ocupa todo el viewport y centra el contenido */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    /* Ambas pantallas (presentación y servicios) ocuparán el 100% del viewport y estarán centradas */
+    .pantalla-completa {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #222;
+    }
+    /* Estilos para la pantalla de presentación */
+    h1 {
+      font-size: 150px;
+      color: #FFD700;
+    }
+    p {
+      font-size: 70px;
+      margin-bottom: 60px;
+    }
+    button {
+      padding: 40px 80px;
+      font-size: 50px;
+      background-color: #FFD700;
+      color: #222;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+    /* Botón adicional "Salir" en la presentación */
+    #presentacion button.salir {
+      margin-top: 20px;
+      background-color: #FF6347;
+    }
+    /* Pantalla de servicios, inicialmente oculta */
+    #servicios {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #222;
+    }
+    .precio {
+      font-size: 60px;
+      font-weight: bold;
+      color: #FFD700;
+      margin-top: 40px;
+    }
+    .casilla {
+      width: 60px;
+      height: 60px;
+      transform: scale(2);
+      margin-right: 30px;
+    }
+    .servicio {
+      font-size: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 80px;
+      width: 80vw;
+    }
+    /* Estilos para los emojis animados */
+    .emoji {
+      position: absolute;
+      font-size: 140px;
+      opacity: 0.8;
+      animation: caer 30s linear infinite;
+    }
+    @keyframes caer {
+      0% { transform: translateY(-120vh); opacity: 1; }
+      100% { transform: translateY(120vh); opacity: 0.3; }
+    }
+  </style>
+  <script>
+    // Función para mostrar la pantalla de servicios y ocultar la presentación
+    function mostrarServicios() {
+      document.getElementById("presentacion").style.display = "none";
+      document.getElementById("servicios").style.display = "flex";
+    }
+    // Función para regresar a la pantalla de presentación
+    function regresar() {
+      document.getElementById("servicios").style.display = "none";
+      document.getElementById("presentacion").style.display = "flex";
+    }
+    // Función para calcular el precio total basado en las casillas seleccionadas
+    function calcularPrecio() {
+      let precio = 0;
+      if (document.getElementById("corte").checked) precio += 300;
+      if (document.getElementById("barba").checked) precio += 150;
+      if (document.getElementById("cejas").checked) precio += 100;
+      document.getElementById("total").innerText = "💈 Total a pagar: " + precio + " pesos";
+    }
+    // Función para crear los emojis que caen de forma continua
+    function crearEmojis() {
+      for (let i = 0; i < 8; i++) {
+        let emoji = document.createElement("div");
+        emoji.innerText = "💈";
+        emoji.classList.add("emoji");
+        // Posición horizontal aleatoria
+        emoji.style.left = Math.random() * 100 + "vw";
+        // Animación con duración entre 20 y 30 segundos para que caigan sin demora prolongada
+        emoji.style.animationDuration = (20 + Math.random() * 10) + "s";
+        document.body.appendChild(emoji);
+      }
+    }
+    // Se crea la animación de emojis tan pronto como el DOM esté cargado de forma automática
+    document.addEventListener("DOMContentLoaded", crearEmojis);
+    
+    // Función para salir de la web
+    function salir() {
+      // Intentar cerrar la ventana (esto puede estar bloqueado en muchos navegadores)
+      window.close();
+      // Si eso falla, redirige a una página en blanco
+      location.href = "about:blank";
+    }
+  </script>
+</head>
+<body>
+  <!-- Pantalla de Presentación: lo primero que se muestra -->
+  <div id="presentacion" class="pantalla-completa">
+    <h1>BARBER X 💈</h1>
+    <p>Tu estilo, nuestra pasión. Calidad, precisión y un toque de lujo.</p>
+    <button onclick="mostrarServicios()">Ver Servicios</button>
+    <button class="salir" onclick="salir()">Salir</button>
+  </div>
+  
+  <!-- Pantalla de Servicios -->
+  <div id="servicios" class="pantalla-completa">
+    <h2 style="font-size: 90px;">Selecciona tus servicios</h2>
+    <div class="servicio">
+      <input type="checkbox" id="corte" class="casilla" onclick="calcularPrecio()">
+      <span>Corte de cabello (300 pesos)</span>
+    </div>
+    <div class="servicio">
+      <input type="checkbox" id="barba" class="casilla" onclick="calcularPrecio()">
+      <span>Afeitado de barba (150 pesos)</span>
+    </div>
+    <div class="servicio">
+      <input type="checkbox" id="cejas" class="casilla" onclick="calcularPrecio()">
+      <span>Arreglo de cejas (100 pesos)</span>
+    </div>
+    <h3 id="total" class="precio">💈 Total a pagar: 0 pesos</h3>
+    <button onclick="regresar()">Regresar</button>
+  </div>
+</body>
+</html>
